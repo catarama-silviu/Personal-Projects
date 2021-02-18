@@ -36,14 +36,16 @@ li a:hover {
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <style>
-.btn + .btn:not(.btn-block) {
-  margin: 0 0 0 5px;
+.btn+.btn:not(.btn-block) {
+	margin: 0 0 0 5px;
 }
+
 .btn-info {
-  background: #5cc7dd;
-  border-color: #5cc7dd;
-  color: #ffffff;
+	background: #5cc7dd;
+	border-color: #5cc7dd;
+	color: #ffffff;
 }
+
 .btn-warning {
   background: #ab7a4b;
   border-color: #ab7a4b;
@@ -64,18 +66,49 @@ li a:hover {
 color: #ffffff;
 }
 .table {
-  margin: 0 0 15px;
-  position: relative;
+	margin: 0 0 15px;
+	position: relative;
+	-webkit-border-radius: 0 0 0 0;
+	-moz-border-radius: 0 0 0 0;
+	border-radius: 0 0 0 0;
+}
+
+.table.table-white {
+	background: #fff;
+}
+.table-condensed {
+  font-size: 10pt;
+}
+.table th, .table td {
+	border-top-color: #ebebeb;
+}
+.table-striped tbody tr:nth-child(odd) td,
+.table-striped tbody tr:nth-child(odd) th {
+  background-color: #fafafa;
+}
+.table-bordered {
+  border-color: #efefef;
+  /* Reset rounded corners */
+
+}
+.table-bordered th,
+.table-bordered td {
+  border-color: #efefef;
+}
+.table-bordered thead:first-child tr:first-child > th:first-child,
+.table-bordered tbody:first-child tr:first-child > td:first-child,
+.table-bordered tbody:first-child tr:first-child > th:first-child,
+.table-bordered thead:first-child tr:first-child > th:last-child,
+.table-bordered tbody:first-child tr:first-child > td:last-child,
+.table-bordered tbody:first-child tr:first-child > th:last-child,
+.table-bordered thead:last-child tr:last-child > th:first-child,
+.table-bordered tbody:last-child tr:last-child > td:first-child,
+.table-bordered tbody:last-child tr:last-child > th:first-child,
+.table-bordered tfoot:last-child tr:last-child > td:first-child,
+.table-bordered tfoot:last-child tr:last-child > th:first-child {
   -webkit-border-radius: 0 0 0 0;
   -moz-border-radius: 0 0 0 0;
   border-radius: 0 0 0 0;
-}
-.table.table-white {
-  background: #fff;
-}
-.table th,
-.table td {
-  border-top-color: #ebebeb;
 }
 </style>
 </head>
@@ -102,12 +135,15 @@ color: #ffffff;
 	<a class="btn btn-info" th:href="@{/teams/new_team}">Add Team</a><br>
 	<br> 
 	<th:block th:each="team : ${listTeams}">
-	<table class="table ">
+	<table class="table  table-bordered">
 	<thead style="background-color:#a4fa93">
 	
 			<tr>
 				<th>Team Name</th>
-				
+				<th></th>
+				<th></th>
+				<th></th>
+				<th>Butons</th>
 				
 			</tr>
 		</thead>
@@ -115,30 +151,32 @@ color: #ffffff;
 		<tr >
                 <td th:text="${team.teamName}" ></td>
            
-                
+                   <td></td>
+                  <td></td>
+                    <td></td>
                 <td>
                 	<a class="btn btn-mini btn-success pull-left" th:href="@{'/teams/edit_team/' + ${team.idteam}}">Edit</a>
                 	&nbsp;&nbsp;&nbsp;
                 	<a class="btn btn-mini btn-warning pull-right" th:href="@{'/teams/delete_team/' + ${team.idteam}}">Delete</a>
                 </td>
-                
+             
             </tr>
               
 		</tbody>
 		
-	</table>
-	<table class="table table-white">
-		<thead style="background-color: #e5f659">
+
+		<thead style="background-color: #e5f659" class="table-condensed">
 
 			<tr>
 				<th>Member Name</th>
 				<th>Member Activity Domain</th>
 				<th>Member Username</th>
 				<th>Member Role</th>
+				<th>Butons</th>
 				
 			</tr>
 		</thead>
-		<tbody style="background-color: #f8ffb9">
+		<tbody style="background-color: #f8ffb9" class="table-condensed">
 		<tr th:each="member : ${team.team_memberList}">
                 <td th:text="${member.member_name}" ></td>
                 <td th:text="${member.activity_domanin}" ></td>
@@ -155,6 +193,7 @@ color: #ffffff;
 		</tbody>
 		
 	</table>
+	<br>
 	</th:block>
 	</div>
 	</body>

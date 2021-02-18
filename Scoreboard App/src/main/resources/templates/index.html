@@ -138,19 +138,20 @@ color: #ffffff;
 		<br> <a class="btn btn-info" th:href="@{/new_board}">Add
 			Board</a><br> <br>
 		<th:block th:each="board : ${listBoards}">
-			<table  class="table   table-bordered">
+			<table class="table   table-bordered">
 
-				<thead style="background-color:#a4fa93">
+				<thead style="background-color: #a4fa93">
 					<tr>
 						<th>Board Name</th>
 						<th>Board Stories</th>
 						<th>Board Status</th>
 						<th>Board Start Date</th>
 						<th>Board End Date</th>
-						<th></th><th></th>
+						<th></th>
+						<th></th>
 					</tr>
 				</thead>
-				<tbody style="background-color:  #d8fece">
+				<tbody style="background-color: #d8fece">
 
 					<tr>
 						<td th:text="${board.boardName}"></td>
@@ -159,13 +160,15 @@ color: #ffffff;
 						<td th:text="${board.startDate_board}"></td>
 						<td th:text="${board.endDate_board}"></td>
 						<td></td>
-						<td><a class="btn btn-mini btn-success pull-left" th:href="@{'/edit_board/' + ${board.idBoard}}">Edit</a>
-							 <a class="btn btn-mini btn-warning pull-right" th:href="@{'/delete_board/' + ${board.idBoard}}">Delete</a></td>
+						<td><a class="btn btn-mini btn-success pull-left"
+							th:href="@{'/edit_board/' + ${board.idBoard}}">Edit</a> <a
+							class="btn btn-mini btn-warning pull-right"
+							th:href="@{'/delete_board/' + ${board.idBoard}}">Delete</a></td>
 
 
 					</tr>
 				</tbody>
-<thead style="background-color: #e5f659" class="table-condensed">
+				<thead style="background-color: #e5f659" class="table-condensed">
 
 					<tr>
 						<th>TaskList Name</th>
@@ -187,7 +190,7 @@ color: #ffffff;
 						<td th:text="${taskList.team_taskList.teamName}"></td>
 						<td><a class="btn btn-mini btn-success pull-left"
 							th:href="@{'/tasklists/edit_tasklist/' + ${taskList.idTaskList}}">Edit</a>
-							 <a class="btn btn-mini btn-warning pull-right"
+							<a class="btn btn-mini btn-warning pull-right"
 							th:href="@{'/tasklists/delete_tasklist/' + ${taskList.idTaskList}}">Delete</a>
 						</td>
 
@@ -196,10 +199,11 @@ color: #ffffff;
 				</tbody>
 			</table>
 			<br>
-		
+			<hr>
 
-			
+
 		</th:block>
+		
 	</div>
 </body>
 </html>
