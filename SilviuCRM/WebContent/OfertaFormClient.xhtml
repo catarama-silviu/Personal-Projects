@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"httf://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head />
+<h:outputStylesheet name="primeicons/primeicons.css"
+	library="primefaces" />
+<body>
+<p:tabMenu activeIndex="#{param.i}">
+    <p:menuitem value="Produse" outcome="ProdusFormClient.xhtml" icon="pi pi-star">
+        <f:param name="i" value="0" />
+    </p:menuitem>
+    <p:menuitem value="Oferte" outcome="OfertaFormClient.xhtml" icon="pi pi-star">
+        <f:param name="i" value="1" />
+    </p:menuitem>
+   <p:menuitem value="Comenzi" outcome="ComandaFormClient.xhtml" icon="pi pi-star">
+        <f:param name="i" value="2" />
+    </p:menuitem>
+       <p:menuitem value="Tickete" outcome="TicketFormClient.xhtml" icon="pi pi-star">
+        <f:param name="i" value="3" />
+    </p:menuitem>
+</p:tabMenu>
+	<h:form>
+
+
+		<p:selectOneMenu valueChangeListener="#{loginForm.redirectLogOut}"
+			style="width:10%; float:right ;box-sizing: border-box;">
+			<f:selectItem itemValue="#{ofertaFormClient.contactLogin.idContact}"
+				itemLabel="#{ofertaFormClient.contactLogin.numeContact}" />
+			<f:selectItem itemLabel="ProfilulMeu" itemValue="Profilul Meu" />
+			<f:selectItem itemLabel="Log Out" itemValue="Log Out" />
+			<f:ajax listener="#{loginForm.redirectLogOut}" />
+		</p:selectOneMenu>
+
+
+
+	</h:form>
+
+	<h:form id="formOferta" border="0">
+
+
+
+
+		<p:dataTable border="1" var="oferta" value="#{ofertaFormClient.lstOferte}"
+			id="dataTableOferta" selectionMode="single"
+			rowKey="#{oferta.idOferta}">
+
+
+			<p:column headerText="ID Oferta"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{oferta.idOferta}" />
+			</p:column>
+			<p:column headerText="Owner" style="border:1px ;text-align:center;">
+				<h:outputText value="#{oferta.ownerOferta.numeAngajat}"
+					style="center" />
+
+			</p:column>
+		
+
+
+			<p:column headerText="Data Inregistrare"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{oferta.dataInregistrareOferta}" />
+			</p:column>
+
+			<p:column headerText="Valabila pana la:"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{oferta.dataLimitaValabilitateOferta}" />
+			</p:column>
+
+			<p:column headerText="Produse">
+				<p:commandButton value="Detalii" icon="pi pi-home"
+					action="#{ofertaForm.select(oferta)}"
+					oncomplete="PF('dlgVizualizareLiniiOferta').show()"
+					update=":formVizualizareLinieOferta" />
+			</p:column>
+
+			<p:column headerText="Total (Fara TVA)">
+				<h:outputText value="#{oferta.pretOfertaFaraTva}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Total (Cu TVA)">
+				<h:outputText value="#{oferta.pretOfertaCuTva}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+			<p:column headerText="Descriere">
+				<h:outputText value="#{oferta.descriereOferta}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Editor">
+				<p:commandButton value="Edit" icon="pi pi-home"
+					action="#{ofertaFormClient.select(oferta)}"
+					oncomplete="PF('dlgAddOferta').show()" update=":formVizualizareLinieOferta" />
+				
+
+
+
+			</p:column>
+
+
+		</p:dataTable>
+
+	</h:form>
+
+
+
+	<p:dialog widgetVar="dlgVizualizareLiniiOferta" closeOnEscape="true"
+		modal="true" resizable="true">
+		<h:form id="formVizualizareLinieOferta" border="5">
+			<p:dataTable border="1" var="l"
+				value="#{ofertaFormClient.oferta.lstLiniiProdusOferte}"
+				id="dataTableDetaliiOferta" selectionMode="single"
+				rowKey="#{l.idLinieOferta}">
+
+
+				<p:column headerText="Produs" style="border:1px ;text-align:center;">
+					<h:outputText value="#{l.produsLinieOferta.numeProdus}" />
+				</p:column>
+
+				<p:column headerText="Cantitate"
+					style="border:1px ;text-align:center;">
+					<h:outputText value="#{l.cantitateProdusLinieOferta}"
+						style="center" />
+				</p:column>
+				<p:column headerText="Pret(Fara TVA)"
+					style="border:1px ;text-align:center;">
+					<h:outputText value="#{l.pretFaraTvaLinieOferta}" style="center" />
+				</p:column>
+				<p:column headerText="Pret (Cu TVA)"
+					style="border:1px ;text-align:center;">
+					<h:outputText value="#{l.pretCuTvaLinieOferta}" style="center" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:dialog>
+
+
+
+
+</body>
+</html>

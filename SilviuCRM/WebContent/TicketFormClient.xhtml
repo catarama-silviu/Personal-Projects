@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"httf://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<style>
+.requiredMessage {
+	color: red
+}
+</style>
+</h:head>
+<h:outputStylesheet name="primeicons/primeicons.css"
+	library="primefaces" />
+<body>
+	<p:tabMenu activeIndex="#{param.i}">
+		<p:menuitem value="Produse" outcome="ProdusFormClient.xhtml"
+			icon="pi pi-star">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+		<p:menuitem value="Oferte" outcome="OfertaFormClient.xhtml"
+			icon="pi pi-star">
+			<f:param name="i" value="1" />
+		</p:menuitem>
+		<p:menuitem value="Comenzi" outcome="ComandaFormClient.xhtml"
+			icon="pi pi-star">
+			<f:param name="i" value="2" />
+		</p:menuitem>
+		<p:menuitem value="Tickete" outcome="TicketFormClient.xhtml"
+			icon="pi pi-star">
+			<f:param name="i" value="3" />
+		</p:menuitem>
+	</p:tabMenu>
+
+	<h:form id="formTicket" border="5">
+
+		<p:selectOneMenu valueChangeListener="#{loginForm.redirectLogOut}"
+			style="width:10%; float:right ;box-sizing: border-box;">
+			<f:selectItem itemValue="#{ticketFormClient.contactLogin.idContact}"
+				itemLabel="#{ticketFormClient.contactLogin.numeContact}" />
+			<f:selectItem itemLabel="Profilul Meu" itemValue="Profilul Meu" />
+			<f:selectItem itemLabel="Log Out" itemValue="Log Out" />
+			<f:ajax listener="#{loginForm.redirectLogOut}" />
+		</p:selectOneMenu>
+
+		<h:panelGrid columns="1" cellpadding="5">
+
+			<p:commandButton value="Inregistreaza Ticket"
+				actionListener="#{ticketFormClient.adaugaTicket}"
+				oncomplete="PF('dlgAddTicket').show();" update=":formAddTicket" />
+
+		</h:panelGrid>
+
+		<p:dataTable border="1" var="t" value="#{ticketFormClient.lstTicketsClient}"
+			id="dataTableTickets" rowKey="#{t.idTicket}">
+
+
+
+			<p:column headerText="ID Ticket"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{t.idTicket}" style="center" />
+
+			</p:column>
+
+
+			<p:column headerText="Nume Client"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{t.contactTicket.numeContact}" />
+			</p:column>
+
+
+			<p:column headerText="Categorie">
+				<h:outputText value="#{t.categorieTicket}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Continut"
+				style="border:1px ;text-align:center;">
+				<p:commandButton value="Deschide Ticket"
+					action="#{ticketFormClient.select(t)}"
+					oncomplete="PF('dlgVizualizareTicket').show();"
+					update=":formVizulizareTicket" />
+			</p:column>
+
+
+
+			<p:column headerText="Data Creare">
+				<h:outputText value="#{t.dataDeschidereTicket}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Data Inchidere">
+				<h:outputText value="#{t.dataInchidereTicket}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+
+			<p:column headerText="Status">
+				<h:outputText value="#{t.statusTicket}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+			<p:column headerText="Operatiuni">
+				<p:commandButton value="Vizualizare Raspuns" icon="pi pi-home"
+					action="#{ticketFormClient.select(t)}"
+					oncomplete="PF('dlgVizualizareRaspunsTicket').show()"
+					update=":formVizualizareRaspunsTicket" />
+				<p:commandButton value="Inchide Ticket" icon="pi pi-home"
+					action="#{ticketFormClient.inchideTicket(t)}" update=":formTicket" />
+
+
+
+
+			</p:column>
+
+		</p:dataTable>
+
+	</h:form>
+
+	<p:dialog widgetVar="dlgAddTicket" closeOnEscape="true" modal="true"
+		responsive="true" resizable="true">
+		<h:form id="formAddTicket" border="5">
+
+			<h:panelGrid>
+
+				<h:outputLabel for="numeClient" value="Nume:"
+					style="font-weight:bold" />
+				<p:outputLabel id="numeClient"
+					value="#{ticketFormClient.contactLogin.numeContact}" />
+
+
+				<h:outputLabel for="categorieTicket " value="Categorie:"
+					style="font-weight:bold" />
+				<p:selectOneMenu id="cboTicket"
+					value="#{ticketFormClient.ticket.categorieTicket}">
+					<f:selectItem itemLabel="Cerere Oferta" itemValue="Cerere Oferta" />
+					<f:selectItem itemLabel="Comanda" itemValue="Comanda" />
+					<f:selectItem itemLabel="Retur Produs" itemValue="Retur Produs" />
+					<f:selectItem itemLabel="Garantie" itemValue="Garantie" />
+					<f:selectItem itemLabel="Diverse" itemValue="Diverse" />
+
+
+				</p:selectOneMenu>
+
+				<h:outputLabel for="continut " value="Continut:"
+					style="font-weight:bold" />
+				<p:inputTextarea rows="5" cols="40" counter="display"
+					maxlength="500" counterTemplate="{0} characters remaining."
+					autoResize="true" value="#{ticketFormClient.ticket.continutTicket}" />
+
+				<h:outputText id="display" />
+
+			</h:panelGrid>
+			<p:outputPanel>
+
+				<p:tooltip />
+
+				<p:messages id="messages" showDetail="true" closable="true"
+					styleClass="requiredMessage">
+					<p:autoUpdate />
+				</p:messages>
+
+				<p:commandButton value="Salvare" id="salvareTicket"
+					actionListener="#{ticketFormClient.salvareTicket}"
+					update=":formTicket" style="margin-right:20px;" />
+
+			</p:outputPanel>
+		</h:form>
+
+	</p:dialog>
+
+	<p:dialog widgetVar="dlgVizualizareTicket" closeOnEscape="true"
+		modal="true" responsive="true" resizable="true">
+		<h:form id="formVizulizareTicket" border="5">
+			<p:outputLabel id="vizualizareTicket"
+				value="#{ticketFormClient.ticket.continutTicket}" />
+
+		</h:form>
+	</p:dialog>
+
+
+
+	<p:dialog widgetVar="dlgVizualizareRaspunsTicket" closeOnEscape="true"
+		modal="true" responsive="true" resizable="true">
+		<h:form id="formVizualizareRaspunsTicket" border="5">
+			<p:dataTable border="1" var="t"
+				value="#{ticketFormClient.ticket.listaRaspunsuriTicket}"
+				id="dataTableRaspunsuriTickets" rowKey="#{t.idRaspunsTicket}">
+
+				<p:column headerText="Nume Angajat"
+					style="border:1px ;text-align:center;">
+					<h:outputText value="#{t.angajatRaspunsTicket.numeAngajat}" />
+				</p:column>
+				<p:column headerText="Data Raspuns"
+					style="border:1px ;text-align:center;">
+					<h:outputText
+						value="#{t.dataRaspunsTicket}" />
+				</p:column>
+
+				<p:column headerText="Raspuns"
+					style="border:1px ;text-align:center;">
+					<h:outputText
+						value="#{t.continutRaspunsEmail}" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+	</p:dialog>
+
+
+</body>
+</html>

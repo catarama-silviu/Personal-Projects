@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"httf://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head >
+
+	<style type="text/css">
+    .ui-datatable .ui-datatable-header {
+        text-align: right !important;
+    }
+ 
+    .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+        display: none;
+    }
+</style>
+</h:head>
+<body>
+<h:outputStylesheet name="primeicons/primeicons.css"
+	library="primefaces" />
+	
+	<p:tabMenu activeIndex="#{param.i}">
+		<p:menuitem value="Leads" outcome="LeadForm.xhtml" icon="pi pi-star">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+		<p:menuitem value="Contacte" outcome="ContactForm.xhtml"
+			icon="pi pi-search">
+			<f:param name="i" value="1" />
+		</p:menuitem>
+		<p:menuitem value="Produse" outcome="ProdusForm.xhtml"
+			icon="pi pi-file">
+			<f:param name="i" value="2" />
+		</p:menuitem>
+		<p:menuitem value="Oferte" outcome="OfertaForm.xhtml"
+			icon="pi pi-briefcase">
+			<f:param name="i" value="3" />
+		</p:menuitem>
+		<p:menuitem value="Comenzi" outcome="ComandaForm.xhtml"
+			icon="pi pi-user">
+			<f:param name="i" value="4" />
+
+		</p:menuitem>
+		<p:menuitem value="Tickete" outcome="TicketForm.xhtml"
+			icon="pi pi-user">
+			<f:param name="i" value="5" />
+
+		</p:menuitem>
+		<p:menuitem value="Operatiuni" outcome="OperatiuneForm.xhtml"
+			icon="pi pi-user">
+			<f:param name="i" value="6" />
+
+		</p:menuitem>
+		<p:menuitem value="Angajati" outcome="AngajatForm.xhtml"
+			icon="pi pi-user">
+			<f:param name="i" value="7" />
+
+		</p:menuitem>
+	</p:tabMenu>
+ 
+	
+	<h:form id="formOperatiune" border="0">
+
+
+	<p:selectOneMenu  valueChangeListener="#{loginForm.redirectLogOut}" style="width:10%; float:right ;box-sizing: border-box;">
+	                <f:selectItem  itemValue="#{operatiuneForm.angajatLogin.idAngajat}" itemLabel="#{operatiuneForm.angajatLogin.numeAngajat}"/>
+					<f:selectItem itemLabel="Profilul Meu" itemValue="Profilul Meu" />
+					<f:selectItem itemLabel="Log Out" itemValue="Log Out" />
+					<f:ajax listener="#{loginForm.redirectLogOut}" />
+				</p:selectOneMenu>
+
+
+
+		<p:dataTable border="1" var="o" value="#{operatiuneForm.lstOperatiuni}" widgetVar="dtOpertatiuni"
+			id="dataTableOperatiuni" selectionMode="single" stickyHeader="true" stickyTopAt=".layout-topbar"
+			 rows="5"
+                 paginator="true"
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                 rowsPerPageTemplate="5,10,15"
+			
+			
+			rowKey="#{o.idOperatiune}"> 
+			
+
+			 
+
+
+			<p:column headerText="Id Operatiune"
+				style="border:1px ;text-align:center;"  filterBy="#{o.idOperatiune}"    sortBy="#{o.idOperatiune}" filterMatchMode="contains" >
+				<h:outputText value="#{o.idOperatiune}" style="center" />
+
+			</p:column>
+			<p:column headerText="Data" sortBy="#{o.dataOperatiune}" filterBy="#{o.dataOperatiune}"   filterMatchMode="contains" >
+				<h:outputText value="#{o.dataOperatiune}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+	<p:column headerText="Categorie"  filterBy="#{o.categorieOperatiune}" sortBy="#{o.categorieOperatiune}" filterMatchMode="exact">
+            <f:facet name="filter">
+                <p:selectOneMenu onchange="PF('dtOpertatiuni').filter()" style="width:100%; box-sizing: border-box;" >
+                    <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{operatiuneForm.lstCategorii}" />
+                </p:selectOneMenu>
+            </f:facet>
+				<h:outputText value="#{o.categorieOperatiune}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+			
+		<p:column headerText="Tip Operatiune">
+				<h:outputText value="#{o.tipOperatiune}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+			
+			
+				<p:column headerText="Descriere">
+				<h:outputText value="#{o.descriereOperatiune}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+			<p:column headerText="Editor">
+			
+				<p:commandButton value="Delete" icon="pi pi-home"
+					action="#{operatiuneForm.stergereOperatiune(o)}" update=":formOperatiune" />
+
+
+
+			</p:column>
+
+ <f:facet name="header">
+            <p:commandButton icon="pi pi-refresh"
+					action="#{operatiuneForm.initLstOperatiuni}" update=":formOperatiune" />
+        </f:facet>
+		</p:dataTable>
+
+	</h:form>
+	
+	
+	
+	
+
+</body>
+</html>

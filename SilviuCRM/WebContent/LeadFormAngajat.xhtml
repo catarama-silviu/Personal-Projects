@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"httf://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head />
+<h:outputStylesheet name="primeicons/primeicons.css"
+	library="primefaces" />
+<body>
+<p:tabMenu activeIndex="#{param.i}">
+    <p:menuitem value="Leads" outcome="LeadFormAngajat.xhtml" icon="pi pi-star">
+        <f:param name="i" value="0" />
+    </p:menuitem>
+    <p:menuitem value="Contacte" outcome="ContactFormAngajat.xhtml" icon="pi pi-search">
+        <f:param name="i" value="1" />
+    </p:menuitem>
+    <p:menuitem value="Produse" outcome="ProdusFormAngajat.xhtml" icon="pi pi-file">
+        <f:param name="i" value="2" />
+    </p:menuitem>
+    <p:menuitem value="Oferte" outcome="OfertaFormAngajat.xhtml" icon="pi pi-briefcase">
+        <f:param name="i" value="3" />
+    </p:menuitem>
+    <p:menuitem value="Comenzi" outcome="ComandaFormAngajat.xhtml" icon="pi pi-user">
+        <f:param name="i" value="4" />
+        
+    </p:menuitem>
+      <p:menuitem value="Tikete" outcome="TicketFormAngajat.xhtml" icon="pi pi-user">
+        <f:param name="i" value="5" />
+        
+    </p:menuitem>
+     <p:menuitem value="Operatiuni" outcome="OperatiuneFormAngajat.xhtml" icon="pi pi-user">
+        <f:param name="i" value="6" />
+        
+    </p:menuitem>
+</p:tabMenu>
+	<h:form>
+	
+	
+	<p:selectOneMenu  valueChangeListener="#{loginForm.redirectLogOut}" style="width:10%; float:right ;box-sizing: border-box;">
+	                <f:selectItem  itemValue="#{leadForm.angajatLogin.idAngajat}" itemLabel="#{leadForm.angajatLogin.numeAngajat}"/>
+					<f:selectItem itemLabel="ProfilulMeu" itemValue="Profilul Meu" />
+					<f:selectItem itemLabel="Log Out" itemValue="Log Out" />
+					<f:ajax listener="#{loginForm.redirectLogOut}" />
+				</p:selectOneMenu>
+	
+	
+		<p:commandButton value="Add Lead" icon="pi pi-home"
+			actionListener="#{leadForm.addLeadNou}"
+			 oncomplete="PF('dlgAddLead1').show()"
+			update=":formAddLead1" />
+	</h:form>
+
+	<h:form id="formLead" border="0">
+
+
+
+
+		<p:dataTable border="1" var="lead" value="#{leadForm.lstLeads}"
+			id="dataTableLead" selectionMode="single" rowKey="#{lead.idLead}">
+
+			<p:ajax event="rowSelect"
+				actionListener="#{formularClienti.onRowSelect}" />
+			<p:ajax event="rowUnselect"
+				listener="#{formularClienti.onRowUnselect}" />
+
+
+
+			<p:column headerText="Nume Lead"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{lead.numeLead}" style="center" />
+
+			</p:column>
+			<p:column headerText="Lead Owner">
+				<h:outputText value="#{lead.leadOwner.numeAngajat}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Adresa E-mail"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{lead.adresaEmailLead}" />
+			</p:column>
+
+			<p:column headerText="Numar Telefon"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{lead.nrTelefonLead}" />
+			</p:column>
+
+			<p:column headerText="Sursa Lead"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{lead.sursaLead}" />
+			</p:column>
+
+			<p:column headerText="Status Lead">
+				<h:outputText value="#{lead.leadStatus}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Data Nasterii">
+				<h:outputText value="#{lead.dataNasteriiLead}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Data Inscriere Lead">
+				<h:outputText value="#{lead.dataInscriereLead}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+			<p:column headerText="Domeniul de Activitate">
+				<h:outputText value="#{lead.domeniuDeActivitateLead}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+			<p:column headerText="Tara Lead">
+				<h:outputText value="#{lead.adresaTaraLead}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+			<p:column headerText="Oras Lead">
+				<h:outputText value="#{lead.adresaOrasLead}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+			<p:column headerText="Descriere">
+				<h:outputText value="#{lead.descriereLead}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+			<p:column headerText="Editor">
+				<p:commandButton value="Edit" icon="pi pi-home"
+					action="#{leadForm.select(lead)}"
+					oncomplete="PF('dlgAddLead1').show()" 
+					update=":formAddLead1"/>
+				<p:commandButton value="Trasfera la Contacte" icon="pi pi-home"
+					action="#{leadForm.transferLaContacte(lead)}" update=":formLead" />
+
+
+			</p:column>
+
+
+		</p:dataTable>
+
+	</h:form>
+
+
+	<p:dialog header="Basic Dialog" widgetVar="dlgAddLead1"
+		closeOnEscape="true" modal="true" responsive="true" resizable="true">
+		<h:form id="formAddLead1" border="5">
+
+
+			<p:outputPanel>
+				<h3>Adaugare Lead Nou</h3>
+
+
+				<p:commandButton value="Salvare Lead" id="SalvareLeadNou"
+					actionListener="#{leadForm.salvareLead}" style="margin-right:20px;"
+					ajax="false" />
+
+				<p:commandButton value="Anuleaza" id="AnuleazaLead"
+					actionListener="#{leadForm.abandonLead}" style="margin-right:20px;"
+					ajax="false" />
+			</p:outputPanel>
+			<p:outputPanel>
+				<h3>Informatii Lead</h3>
+			</p:outputPanel>
+			<h:panelGrid border="0" columns="4" cellpadding="5">
+
+
+
+
+				<h:outputLabel for="leadOwner " value="Lead Owner:"
+					style="font-weight:bold" />
+
+								<p:outputLabel id="leadOwner"
+					value="#{leadForm.angajatLogin.numeAngajat}"/>
+
+				<h:outputLabel for="numeLead " value="Nume:"
+					style="font-weight:bold" />
+				<p:inputText id="numeLead" value="#{leadForm.lead.numeLead}" />
+
+				<h:outputLabel for="emailLead " value="Adresa Email:"
+					style="font-weight:bold" />
+				<p:inputText id="emailLead" value="#{leadForm.lead.adresaEmailLead}" />
+
+				<h:outputLabel for="numarTelefonLead " value="Numar de Telefon:"
+					style="font-weight:bold" />
+				<p:inputText id="numarTelefonLead"
+					value="#{leadForm.lead.nrTelefonLead}" />
+
+				<h:outputLabel for="leadStatus " value="Lead Status:"
+					style="font-weight:bold" />
+
+				<p:selectOneMenu id="cboLeadStatus"
+					value="#{leadForm.lead.leadStatus}">
+					<f:selectItem itemLabel="Contactat" itemValue="Contactat" />
+					<f:selectItem itemLabel="Necontactat" itemValue="Necontactat" />
+					<f:selectItem itemLabel="De contactat" itemValue="De contactat" />
+					<f:selectItem itemLabel="Lead pierdut" itemValue="Lead Pierdut" />
+					<f:selectItem itemLabel="Lead Calificat" itemValue="Lead Calificat" />
+
+				</p:selectOneMenu>
+
+
+				<h:outputLabel for="sursaLead " value="Sursa Lead:"
+					style="font-weight:bold" />
+				<p:selectOneMenu id="cboSursaLead"
+					value="#{leadForm.lead.sursaLead}">
+
+					<f:selectItem itemLabel="Campanie de Marketing"
+						itemValue="Campanie de Marketing" />
+					<f:selectItem itemLabel="Apel Telefonic" itemValue="Apel Telefonic" />
+					<f:selectItem itemLabel="Cunostinta Angajat"
+						itemValue="Cunostinta Angajat" />
+					<f:selectItem itemLabel="Retele Sociale" itemValue="Retele Sociale" />
+					<f:selectItem itemLabel="Forumuri Online"
+						itemValue="Forumuri Online" />
+					<f:selectItem itemLabel="Parteneri" itemValue="Parteneri" />
+					<f:selectItem itemLabel="Motoare de Cautare"
+						itemValue="Motoare de Cautare" />
+					<f:selectItem itemLabel="Alta Sursa" itemValue="Alta Sursa" />
+				</p:selectOneMenu>
+
+
+				<h:outputLabel for="domeniulDeActivitateLead"
+					value="Domeniul de Activitate:" style="font-weight:bold" />
+				<p:inputText id="domeniuDeActivitateLead"
+					value="#{leadForm.lead.domeniuDeActivitateLead}" />
+
+				<h:outputLabel for="dataNasteriiLead " value="Data Nasterii:"
+					style="font-weight:bold" />
+				<h:panelGrid columns="2" cellpadding="5">
+					<p:calendar id="german" value="#{leadForm.lead.dataNasteriiLead}"
+						locale="ro" navigator="true" pattern="dd-MMM-yyyy" />
+				</h:panelGrid>
+			</h:panelGrid>
+			<p:outputPanel>
+				<h3>Informatii Adresa Lead</h3>
+			</p:outputPanel>
+			<h:panelGrid border="0" columns="4" cellpadding="5">
+
+				<h:outputLabel for="adresaTaraLead "
+					value="Nume Tara Provenienta Lead:" style="font-weight:bold" />
+				<p:inputText id="adresaTaraLead"
+					value="#{leadForm.lead.adresaTaraLead}" />
+
+				<h:outputLabel for="adresaOrasLead "
+					value="Nume Oras Provenienta Lead:" style="font-weight:bold" />
+				<p:inputText id="adresaOrasLead"
+					value="#{leadForm.lead.adresaOrasLead}" />
+			</h:panelGrid>
+			<p:outputPanel>
+				<h3>Informatii Descriere Lead</h3>
+			</p:outputPanel>
+			<h:panelGrid border="0" columns="2" cellpadding="5">
+
+
+				<h:outputLabel for="descriereLead " value="Descriere:"
+					style="font-weight:bold" />
+				<p:inputTextarea rows="2" cols="70" counter="display"
+					maxlength="120" counterTemplate="{0} characters remaining."
+					autoResize="false" value="#{leadForm.lead.descriereLead}" />
+				<br />
+				<h:outputText id="display" />
+
+
+			</h:panelGrid>
+		</h:form>
+
+
+		<script type="text/javascript">
+			PrimeFaces.locales['ro'] = {
+				closeText : 'La Revedere',
+				prevText : 'Zurück',
+				nextText : 'Weiter',
+				monthNames : [ 'Ianuarie', 'Februarie', 'Martie', 'Aprilie',
+						'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie',
+						'Octombrie', 'Noiembrie', 'Decembrie' ],
+				monthNamesShort : [ 'Ian', 'Feb', 'Mar', 'Apr', 'Mai', 'Iun',
+						'Iul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
+				dayNames : [ 'Duminica', 'Luni', 'Marti', 'Miercuri', 'Joi',
+						'Vineri', 'Sambata' ],
+				dayNamesShort : [ 'Dum', 'Lun', 'Mar', 'Mie', 'Joi', 'Vin',
+						'Sam' ],
+				dayNamesMin : [ 'D', 'L', 'M', 'M ', 'J', 'V ', 'S' ],
+				weekHeader : 'Saptamana',
+				firstDay : 1,
+				isRTL : false,
+				showMonthAfterYear : false,
+				yearSuffix : '',
+				timeOnlyTitle : 'Nur Zeit',
+				timeText : 'Zeit',
+				hourText : 'Stunde',
+				minuteText : 'Minute',
+				secondText : 'Sekunde',
+				currentText : 'Aktuelles Datum',
+				ampm : false,
+				month : 'Monat',
+				week : 'Woche',
+				day : 'Tag',
+				allDayText : 'Ganzer Tag'
+			};
+		</script>
+
+	</p:dialog>
+
+</body>
+</html>

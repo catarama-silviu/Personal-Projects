@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"httf://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head />
+<h:outputStylesheet name="primeicons/primeicons.css"
+	library="primefaces" />
+<body>
+
+<p:tabMenu activeIndex="#{param.i}">
+    <p:menuitem value="Leads" outcome="LeadFormAngajat.xhtml" icon="pi pi-star">
+        <f:param name="i" value="0" />
+    </p:menuitem>
+    <p:menuitem value="Contacte" outcome="ContactFormAngajat.xhtml" icon="pi pi-search">
+        <f:param name="i" value="1" />
+    </p:menuitem>
+    <p:menuitem value="Produse" outcome="ProdusFormAngajat.xhtml" icon="pi pi-file">
+        <f:param name="i" value="2" />
+    </p:menuitem>
+    <p:menuitem value="Oferte" outcome="OfertaFormAngajat.xhtml" icon="pi pi-briefcase">
+        <f:param name="i" value="3" />
+    </p:menuitem>
+    <p:menuitem value="Comenzi" outcome="ComandaFormAngajat.xhtml" icon="pi pi-user">
+        <f:param name="i" value="4" />
+        
+    </p:menuitem>
+      <p:menuitem value="Tikete" outcome="TicketFormAngajat.xhtml" icon="pi pi-user">
+        <f:param name="i" value="5" />
+        
+    </p:menuitem>
+     <p:menuitem value="Operatiuni" outcome="OperatiuneFormAngajat.xhtml" icon="pi pi-user">
+        <f:param name="i" value="6" />
+        
+    </p:menuitem>
+</p:tabMenu>
+	
+	<h:form>
+	
+				<p:selectOneMenu  valueChangeListener="#{loginForm.redirectLogOut}" style="width:10%; float:right ;box-sizing: border-box;">
+	                <f:selectItem  itemValue="#{comandaForm.angajatLogin.idAngajat}" itemLabel="#{comandaForm.angajatLogin.numeAngajat}"/>
+					<f:selectItem itemLabel="ProfilulMeu" itemValue="Profilul Meu" />
+					<f:selectItem itemLabel="Log Out" itemValue="Log Out" />
+					<f:ajax listener="#{loginForm.redirectLogOut}" />
+				</p:selectOneMenu>
+				
+		<p:commandButton value="Add Comanda" icon="pi pi-home"
+			id="btnAdaugaComanda" actionListener="#{comandaForm.addOComandaNoua}"
+			oncomplete="PF('dlgAddComanda').show()" update=":formAddComanda" />
+
+
+	</h:form>
+
+	<h:form id="formComanda" border="0">
+
+		
+
+
+		<p:dataTable border="1" var="c" value="#{comandaForm.lstComenzi}"
+			id="dataTableComanda" selectionMode="single" rowKey="#{c.idComanda}">
+
+
+
+
+			<p:column headerText="ID Comanda"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{c.idComanda}" style="center" />
+
+			</p:column>
+			<p:column headerText="Comanda Owner">
+				<h:outputText value="#{c.ownerComanda.numeAngajat}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+
+			<p:column headerText="Nume Client">
+				<h:outputText value="#{c.contactComanda.numeContact}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+
+
+			<p:column headerText="Produse">
+				<p:commandButton value="Detalii" icon="pi pi-home"
+					action="#{comandaForm.selectComanda(c)}"
+					oncomplete="PF('dlgVizualizareLiniiComanda').show()"
+					update=":formVizualizareLinieComanda" />
+			</p:column>
+
+
+			<p:column headerText="Pret Comanda(Fara TVA)">
+				<h:outputText value="#{c.pretComandaFaraTva}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Pret Comanda(Cu TVA)">
+				<h:outputText value="#{c.pretComandaCuTva}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Data Inregistrare">
+				<h:outputText value="#{c.dataInregistrareComanda}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Status">
+				<h:outputText value="#{c.statusComanda}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Adresa Livrare">
+				<h:outputText value="#{c.adresaComanda}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Descriere">
+				<h:outputText value="#{c.descriereComanda}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Editor">
+				<p:commandButton value="Editeaza" icon="pi pi-home"
+					action="#{comandaForm.selectComanda(c)}"
+					oncomplete="PF('dlgAddComanda').show()" update=":formAddComanda" />
+				
+				<p:commandButton value="Aproba Comanda" icon="pi pi-home"
+					action="#{comandaForm.aprobaComanda(c)}" update=":formComanda" />
+				<p:commandButton value="Anuleaza Comanda" icon="pi pi-home"
+					action="#{comandaForm.anuleazaComanda(c)}" update=":formComanda" />
+
+
+			</p:column>
+
+
+		</p:dataTable>
+
+	</h:form>
+
+
+	<p:dialog widgetVar="dlgAddComanda" closeOnEscape="true" modal="true"
+		responsive="true" resizable="true">
+
+		<h:form id="formAddComanda" border="5">
+
+
+			<p:outputPanel>
+
+
+
+				<p:commandButton value="Salvare Comanda" id="salvareComanda"
+					actionListener="#{comandaForm.salvareComanda}"
+					update=":formComanda" style="margin-right:20px;" ajax="false" />
+
+				<p:commandButton value="Anuleaza" id="AnuleazaLead"
+					actionListener="#{comandaForm.abandonComanda}"
+					style="margin-right:20px;" ajax="false" />
+			</p:outputPanel>
+
+			<h:panelGrid border="0" columns="2" cellpadding="5">
+
+				<h:outputLabel for="ownerComanda " value="Owner Comanda:"
+					style="font-weight:bold" />
+
+				<p:outputLabel id="ownerComanda"
+					value="#{comandaForm.angajatLogin.numeAngajat}"/>
+				
+
+				<h:outputLabel for="contactComanda" value="Client:"
+					style="font-weight:bold" />
+				<p:selectOneMenu id="contactOferta"
+					valueChangeListener="#{comandaForm.valueChangeContact}">
+					<f:selectItems value="#{comandaForm.lstContacte}" var="item"
+						itemValue="#{item.idContact}" itemLabel="#{item.numeContact}" />
+					<f:ajax listener="#{comandaForm.valueChangeContact}" />
+				</p:selectOneMenu>
+
+
+
+				<h:outputLabel for="Produse " value="Produse Comanda:"
+					style="font-weight:bold" />
+				<p:commandButton value="Add Produse"
+					oncomplete="PF('dlgAddProduseComanda').show()"
+					actionListener="#{comandaForm.addLinieComanda}"
+					update=":formAddLinieComanda" />
+
+
+				<h:outputLabel for="adresaLivrare" value="Adresa livrare:"
+					style="font-weight:bold" />
+
+				<p:inputText id="adresaLivrare"
+					value="#{comandaForm.comanda.adresaComanda}">
+					<p:commandButton value="Adauga adresa contactului"
+						actionListener="#{comandaForm.addAdresaContactComanda}"
+						update=":formAddComanda">
+					</p:commandButton>
+				</p:inputText>
+
+				<h:outputLabel for="statusComanda " value="Status:"
+					style="font-weight:bold" />
+
+				<p:selectOneMenu id="cboComandaStatus"
+					value="#{comandaForm.comanda.statusComanda}">
+					<f:selectItem itemLabel="Creata" itemValue="Creata" />
+					<f:selectItem itemLabel="Aprobata" itemValue="Aprobata" />
+					<f:selectItem itemLabel="Livrata" itemValue="Livrata" />
+					<f:selectItem itemLabel="Anulata" itemValue="Anulata" />
+
+
+				</p:selectOneMenu>
+
+				<h:outputLabel for="descriereComanda " value="Descriere:"
+					style="font-weight:bold" />
+				<p:inputTextarea rows="4" cols="35" counter="display"
+					maxlength="120" counterTemplate="{0} characters remaining."
+					autoResize="true" value="#{comandaForm.comanda.descriereComanda}" />
+
+				<h:outputText id="display" />
+			</h:panelGrid>
+		</h:form>
+
+	</p:dialog>
+
+
+	<p:dialog id="myDialog" widgetVar="dlgAddProduseComanda"
+		closeOnEscape="true" responsive="true" resizable="true">
+
+		<h:form id="formAddLinieComanda" border="5">
+
+
+			<p:commandButton value="Salvare Linie Comanda"
+				id="salvareLinieComanda"
+				actionListener="#{comandaForm.salvareLinieComanda}"
+				update="formAddLinieComanda" ajax="true" style="margin-right:20px;">
+
+			</p:commandButton>
+
+
+
+			<p:commandButton value="Adauga Linie Comanda Noua"
+				id="adaugaAltaLinieComanda"
+				actionListener="#{comandaForm.addLinieComanda}"
+				style="margin-right:20px;">
+
+			</p:commandButton>
+
+
+
+
+
+
+			<h:panelGrid border="0" columns="2" cellpadding="5">
+
+				<h:outputLabel for="produs" value="Produs:" style="font-weight:bold" />
+				<p:selectOneMenu id="produs"
+					valueChangeListener="#{comandaForm.valueChangeLinieComanda}">
+					<f:selectItems value="#{comandaForm.lstProduse}" var="item"
+						itemValue="#{item.idProdus}" itemLabel="#{item.numeProdus}" />
+					<f:ajax listener="#{comandaForm.valueChangeLinieComanda}" />
+				</p:selectOneMenu>
+
+				<h:outputLabel for="cantitate" value="Cantitate:"
+					style="font-weight:bold" />
+				<p:inputText id="cantitate"
+					value="#{comandaForm.linieComanda.cantitateProdusLinieComanda}" />
+
+
+			</h:panelGrid>
+
+
+
+
+
+			<p:dataTable border="1" var="lc"
+				value="#{comandaForm.lstLiniiComanda}" id="dataTableLinieComanda"
+				selectionMode="single" rowKey="#{lc.idLinieComanda}">
+
+
+				<p:column headerText="Produs" id="b"
+					style="border:1px ;text-align:center;">
+					<h:outputText id="a" value="#{lc.produsLinieComanda.numeProdus}" />
+				</p:column>
+
+				<p:column headerText="Cantitate"
+					style="border:1px ;text-align:center;">
+					<h:outputText value="#{lc.cantitateProdusLinieComanda}"
+						style="center" />
+				</p:column>
+				<p:column headerText="Pret(Fara TVA)"
+					style="border:1px ;text-align:center;">
+					<h:outputText value="#{lc.pretFaraTvaLinieComanda}" style="center" />
+				</p:column>
+				<p:column headerText="Pret (Cu TVA)"
+					style="border:1px ;text-align:center;">
+					<h:outputText value="#{lc.pretCuTvaLinieComanda}" style="center" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+	</p:dialog>
+
+
+	<p:dialog widgetVar="dlgVizualizareLiniiComanda" closeOnEscape="true"
+		modal="true" responsive="true" resizable="true">
+		<h:form id="formVizualizareLinieComanda" border="5">
+			<p:dataTable border="1" var="l"
+				value="#{comandaForm.comanda.lstLiniiComanda}"
+				id="dataTableVizLiniiComanda" selectionMode="single"
+				rowKey="#{l.idLinieComanda}">
+
+
+				<p:column headerText="Produs" id="b"
+					style="border:1px ;text-align:center;">
+					<h:outputText id="a" value="#{l.produsLinieComanda.numeProdus}" />
+				</p:column>
+
+				<p:column headerText="Cantitate"
+					style="border:1px ;text-align:center;">
+					<h:outputText value="#{l.cantitateProdusLinieComanda}"
+						style="center" />
+				</p:column>
+				<p:column headerText="Pret(Fara TVA)"
+					style="border:1px ;text-align:center;">
+					<h:outputText value="#{l.pretFaraTvaLinieComanda}" style="center" />
+				</p:column>
+				<p:column headerText="Pret (Cu TVA)"
+					style="border:1px ;text-align:center;">
+					<h:outputText value="#{l.pretCuTvaLinieComanda}" style="center" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:dialog>
+
+
+
+</body>
+</html>

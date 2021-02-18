@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"httf://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head />
+<h:outputStylesheet name="primeicons/primeicons.css"
+	library="primefaces" />
+<body>
+
+
+
+
+ 
+ 
+<h:form id="formLogin"  style="display:block;margin:auto; width:200px; height:200px" >        
+     <p:messages id="messages" showDetail="true" closable="true">
+        
+    </p:messages>
+     
+    <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+     
+   
+        <h:panelGrid columns="2" cellpadding="5" style="display:block;margin:0 auto"  >
+            <h:outputLabel for="username" value="Username:" />
+            <p:inputText id="username" value="#{loginForm.email}" required="true" label="username" />
+             
+            <h:outputLabel for="password" value="Password:" />
+            <p:password id="password" value="#{loginForm.password}" required="true" label="password" />
+             
+            <f:facet name="footer">
+                <p:commandButton value="Login" actionListener="#{loginForm.validLogin}" update="growl" />
+                              
+            </f:facet>  
+        </h:panelGrid>
+       
+</h:form>
+<h:form style="display:block;margin:auto; width:200px;" >
+ <p:commandLink value="Inregistrare Cont Client" actionListener="#{loginForm.addContact}" oncomplete="PF('dlgAddContact1').show();" update=":formAddContact1"/>
+    
+</h:form>
+            
+<p:dialog  widgetVar="dlgAddContact1"
+		closeOnEscape="true" modal="true" responsive="true" resizable="true">
+<h:form id="formAddContact1" border="5">
+
+
+	<p:outputPanel>
+		<h3>Inregistrare Client</h3>
+
+		
+		
+	</p:outputPanel>
+	<p:outputPanel>
+		<h3>Informatii Contact</h3>
+	</p:outputPanel>
+	<h:panelGrid border="0" columns="4" cellpadding="5">
+
+
+
+
+	
+
+		<h:outputLabel for="numeContact " value="Nume:"
+			style="font-weight:bold" />
+		<p:inputText id="numeClient"
+			value="#{loginForm.contact.numeContact}" />
+
+		<h:outputLabel for="emailContact " value="Adresa Email:"
+			style="font-weight:bold" />
+		<p:inputText id="emailClient"
+			value="#{loginForm.contact.adresaEmailContact}" />
+			
+			<h:outputLabel for="password" value="Password:"
+			style="font-weight:bold" />
+		<p:password id="password"
+			value="#{loginForm.password}" />
+
+		<h:outputLabel for="numarTelefonContact " value="Numar de Telefon:"
+			style="font-weight:bold" />
+		<p:inputText id="numarTelefonClient"
+			value="#{loginForm.contact.numarTelefonContact}" />
+
+	<h:outputLabel for="sursaContact " value="De unde ai auzit de noi:"
+			style="font-weight:bold" />
+		<p:selectOneMenu id="cboSursaClientLead" value="#{loginForm.contact.sursaLeadContact}">
+			<f:selectItem itemLabel="Campanie de Marketing"
+						itemValue="Campanie de Marketing" />
+					<f:selectItem itemLabel="Apel Telefonic" itemValue="Apel Telefonic" />
+					<f:selectItem itemLabel="Cunostinta Angajat"
+						itemValue="Cunostinta Angajat" />
+					<f:selectItem itemLabel="Retele Sociale" itemValue="Retele Sociale" />
+					<f:selectItem itemLabel="Forumuri Online"
+						itemValue="Forumuri Online" />
+					<f:selectItem itemLabel="Parteneri" itemValue="Parteneri" />
+					<f:selectItem itemLabel="Motoare de Cautare"
+						itemValue="Motoare de Cautare" />
+					<f:selectItem itemLabel="Alta Sursa" itemValue="Alta Sursa" />
+		</p:selectOneMenu>
+
+	 <h:outputLabel for="dataNasteriiContact " value="Data Nasterii:"
+			style="font-weight:bold" />
+		<h:panelGrid columns="2" cellpadding="5">
+			<p:calendar id="romanCalendar" value="#{loginForm.contact.dataNasteriiContact}" locale="ro"
+				navigator="true" pattern="dd-MMM-yyyy" /> 
+				</h:panelGrid>
+
+
+	
+	</h:panelGrid>
+	<p:outputPanel>
+		<h3>Informatii Adresa Contact</h3>
+	</p:outputPanel>
+	<h:panelGrid border="0" columns="4" cellpadding="5">
+
+		<h:outputLabel for="adresaTaraClient "
+			value="Nume Tara Provenienta Client:" style="font-weight:bold" />
+		<p:inputText id="adresaTaraClient"
+			value="#{loginForm.contact.adresaTaraContact}" />
+
+		<h:outputLabel for="adresaOrasClient "
+			value="Nume Oras Provenienta Contact:" style="font-weight:bold" />
+		<p:inputText id="adresaOrasClient"
+			value="#{loginForm.contact.adresaOrasContact}" />
+	</h:panelGrid>
+	
+	<p:commandButton value="Salvare " id="SalvareClientNou"
+			actionListener="#{loginForm.salvareContact}"
+		
+			style="margin-right:20px;" />
+</h:form>
+
+
+<script type="text/javascript">
+	PrimeFaces.locales['ro'] = {
+		closeText : 'La Revedere',
+		prevText : 'Zurück',
+		nextText : 'Weiter',
+		monthNames : [ 'Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai',
+				'Junie', 'Julie', 'August', 'Septembrie', 'Octombrie',
+				'Noiembrie', 'Decembrie' ],
+		monthNamesShort : [ 'Ian', 'Feb', 'Mar', 'Apr', 'Mai', 'Iun', 'Iul',
+				'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
+		dayNames : [ 'Duminica', 'Luni', 'Marti', 'Miercuri', 'Joi', 'Vineri',
+				'Sambata' ],
+		dayNamesShort : [ 'Dum', 'Lun', 'Mar', 'Mie', 'Joi', 'Vin', 'Sam' ],
+		dayNamesMin : [ 'D', 'L', 'M', 'M ', 'J', 'V ', 'S' ],
+		weekHeader : 'Saptamana',
+		firstDay : 1,
+		isRTL : false,
+		showMonthAfterYear : false,
+		yearSuffix : '',
+		timeOnlyTitle : 'Nur Zeit',
+		timeText : 'Zeit',
+		hourText : 'Stunde',
+		minuteText : 'Minute',
+		secondText : 'Sekunde',
+		currentText : 'Aktuelles Datum',
+		ampm : false,
+		month : 'Monat',
+		week : 'Woche',
+		day : 'Tag',
+		allDayText : 'Ganzer Tag'
+	};
+</script>
+
+
+</p:dialog>
+
+
+</body>
+</html>

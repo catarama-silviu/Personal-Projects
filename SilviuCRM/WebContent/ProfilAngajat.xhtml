@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"httf://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head />
+<h:outputStylesheet name="primeicons/primeicons.css"
+	library="primefaces" />
+<body>
+
+
+
+
+
+
+	<h:outputLabel  value="Profil: #{angajatForm.angajatLogin.numeAngajat} "
+		style="font-weight:bold" />
+		
+
+
+	<h:form id="formProfilAngajat" border="5">
+
+
+		<p:outputPanel>
+			
+			<p:messages id="messages" showDetail="true" closable="true"
+				styleClass="requiredMessage">
+				<p:autoUpdate />
+			</p:messages>
+
+			
+			
+		</p:outputPanel>
+
+
+
+		<h:panelGrid>
+
+			<h:outputLabel for="numeAngajat " value="Nume:"
+				style="font-weight:bold" />
+			<p:outputLabel id="numeAngajat"
+				value="#{angajatForm.angajatLogin}"  />
+
+
+			
+		</h:panelGrid>
+		
+		<p:commandButton value="Salvare Profil" id="salvareAngajatNou"
+				actionListener="#{angajatForm.salvareAngajat}" update=":formAngajat"
+				style="margin-right:20px;" />
+		
+	</h:form>
+
+
+	<script type="text/javascript">
+		PrimeFaces.locales['ro'] = {
+			closeText : 'La Revedere',
+			prevText : 'Zurück',
+			nextText : 'Weiter',
+			monthNames : [ 'Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai',
+					'Junie', 'Julie', 'August', 'Septembrie', 'Octombrie',
+					'Noiembrie', 'Decembrie' ],
+			monthNamesShort : [ 'Ian', 'Feb', 'Mar', 'Apr', 'Mai', 'Iun',
+					'Iul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
+			dayNames : [ 'Duminica', 'Luni', 'Marti', 'Miercuri', 'Joi',
+					'Vineri', 'Sambata' ],
+			dayNamesShort : [ 'Dum', 'Lun', 'Mar', 'Mie', 'Joi', 'Vin', 'Sam' ],
+			dayNamesMin : [ 'D', 'L', 'M', 'M ', 'J', 'V ', 'S' ],
+			weekHeader : 'Saptamana',
+			firstDay : 1,
+			isRTL : false,
+			showMonthAfterYear : false,
+			yearSuffix : '',
+			timeOnlyTitle : 'Nur Zeit',
+			timeText : 'Zeit',
+			hourText : 'Stunde',
+			minuteText : 'Minute',
+			secondText : 'Sekunde',
+			currentText : 'Aktuelles Datum',
+			ampm : false,
+			month : 'Monat',
+			week : 'Woche',
+			day : 'Tag',
+			allDayText : 'Ganzer Tag'
+		};
+	</script>
+
+</body>
+</html>

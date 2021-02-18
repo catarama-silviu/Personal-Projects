@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"httf://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<style>
+.requiredMessage {
+	color: red
+}
+</style>
+</h:head>
+<h:outputStylesheet name="primeicons/primeicons.css"
+	library="primefaces" />
+<body>
+<p:tabMenu activeIndex="#{param.i}">
+    <p:menuitem value="Leads" outcome="LeadFormAngajat.xhtml" icon="pi pi-star">
+        <f:param name="i" value="0" />
+    </p:menuitem>
+    <p:menuitem value="Contacte" outcome="ContactFormAngajat.xhtml" icon="pi pi-search">
+        <f:param name="i" value="1" />
+    </p:menuitem>
+    <p:menuitem value="Produse" outcome="ProdusFormAngajat.xhtml" icon="pi pi-file">
+        <f:param name="i" value="2" />
+    </p:menuitem>
+    <p:menuitem value="Oferte" outcome="OfertaFormAngajat.xhtml" icon="pi pi-briefcase">
+        <f:param name="i" value="3" />
+    </p:menuitem>
+    <p:menuitem value="Comenzi" outcome="ComandaFormAngajat.xhtml" icon="pi pi-user">
+        <f:param name="i" value="4" />
+        
+    </p:menuitem>
+      <p:menuitem value="Tikete" outcome="TicketFormAngajat.xhtml" icon="pi pi-user">
+        <f:param name="i" value="5" />
+        
+    </p:menuitem>
+     <p:menuitem value="Operatiuni" outcome="OperatiuneFormAngajat.xhtml" icon="pi pi-user">
+        <f:param name="i" value="6" />
+        
+    </p:menuitem>
+</p:tabMenu>
+	<h:form id="formTicket" border="5">
+
+		<p:selectOneMenu valueChangeListener="#{loginForm.redirectLogOut}"
+			style="width:10%; float:right ;box-sizing: border-box;">
+			<f:selectItem itemValue="#{ticketFormClient.angajatLogin.idAngajat}"
+				itemLabel="#{ticketFormClient.angajatLogin.numeAngajat}" />
+			<f:selectItem itemLabel="Profilul Meu" itemValue="Profilul Meu" />
+			<f:selectItem itemLabel="Log Out" itemValue="Log Out" />
+			<f:ajax listener="#{loginForm.redirectLogOut}" />
+		</p:selectOneMenu>
+
+		<br/>
+	<br/>
+<p:separator></p:separator>
+<br/>	
+
+		<p:dataTable border="1" var="t" value="#{ticketFormClient.lstTickets}"
+			id="dataTableTickets" rowKey="#{t.idTicket}">
+
+
+
+			<p:column headerText="ID Ticket"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{t.idTicket}" style="center" />
+
+			</p:column>
+
+
+			<p:column headerText="Nume Client"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{t.contactTicket.numeContact}" />
+			</p:column>
+
+
+			<p:column headerText="Categorie">
+				<h:outputText value="#{t.categorieTicket}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Continut"
+				style="border:1px ;text-align:center;">
+				<p:commandButton value="Deschide Ticket"
+					action="#{ticketFormClient.select(t)}"
+					oncomplete="PF('dlgVizualizareTicket').show();"
+					update=":formVizulizareTicket" />
+			</p:column>
+
+
+
+			<p:column headerText="Data Creare">
+				<h:outputText value="#{t.dataDeschidereTicket}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Data Inchidere">
+				<h:outputText value="#{t.dataInchidereTicket}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+
+			<p:column headerText="Status">
+				<h:outputText value="#{t.statusTicket}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+			<p:column headerText="Operatiuni">
+				<p:commandButton value="Vizualizare Raspuns" icon="pi pi-home"
+					action="#{ticketFormClient.select(t)}"
+					oncomplete="PF('dlgVizualizareRaspunsTicket').show()"
+					update=":formVizualizareRaspunsTicket" />
+				<p:commandButton value="Inchide Ticket" icon="pi pi-home"
+					action="#{ticketFormClient.inchideTicketAngajat(t)}" update=":formTicket" />
+
+
+
+
+			</p:column>
+
+		</p:dataTable>
+
+	</h:form>
+
+	<p:dialog widgetVar="dlgAddRaspunsTicket" closeOnEscape="true" modal="true"
+		responsive="true" resizable="true">
+		<h:form id="formRaspunsAddTicket" border="5">
+
+			<h:panelGrid>
+
+				<h:outputLabel for="numeAngajat" value="Nume:"
+					style="font-weight:bold" />
+				<p:outputLabel id="numeAngajat"
+					value="#{ticketFormClient.angajatLogin.numeAngajat}" />
+
+
+
+				<h:outputLabel for="continut " value="Continut Raspuns:"
+					style="font-weight:bold" />
+				<p:inputTextarea rows="5" cols="40" counter="display"
+					maxlength="300" counterTemplate="{0} characters remaining."
+					autoResize="true" value="#{ticketFormClient.raspunsTicket.continutRaspunsEmail}" />
+
+				<h:outputText id="display" />
+
+			</h:panelGrid>
+			<p:outputPanel>
+
+				<p:tooltip />
+
+				<p:messages id="messages" showDetail="true" closable="true"
+					styleClass="requiredMessage">
+					<p:autoUpdate />
+				</p:messages>
+
+				<p:commandButton value="Salvare" id="salvareRaspunsTicket"
+					actionListener="#{ticketFormClient.salvareRaspunsTicket}"
+					update=":formVizualizareRaspunsTicket" style="margin-right:20px;" />
+
+			</p:outputPanel>
+		</h:form>
+
+	</p:dialog>
+
+	<p:dialog widgetVar="dlgVizualizareTicket" closeOnEscape="true"
+		modal="true" responsive="true" resizable="true">
+		<h:form id="formVizulizareTicket" border="5">
+			<p:outputLabel id="vizualizareTicket"
+				value="#{ticketFormClient.ticket.continutTicket}" />
+
+		</h:form>
+	</p:dialog>
+
+
+
+	<p:dialog widgetVar="dlgVizualizareRaspunsTicket" closeOnEscape="true"
+		modal="true" responsive="true" resizable="true">
+		<h:form id="formVizualizareRaspunsTicket" border="5">
+			<p:commandButton value="Raspunde Ticket" icon="pi pi-home"
+					actionListener="#{ticketFormClient.adaugaRaspunsTicket}"
+					oncomplete="PF('dlgAddRaspunsTicket').show()"
+					update=":formVizualizareRaspunsTicket"
+					 />
+					
+			<p:dataTable border="1" var="t"
+				value="#{ticketFormClient.ticket.listaRaspunsuriTicket}"
+				id="dataTableRaspunsuriTickets" rowKey="#{t.idRaspunsTicket}">
+
+				<p:column headerText="Nume Angajat"
+					style="border:1px ;text-align:center;">
+					<h:outputText value="#{t.angajatRaspunsTicket.numeAngajat}" />
+				</p:column>
+				<p:column headerText="Data Raspuns"
+					style="border:1px ;text-align:center;">
+					<h:outputText
+						value="#{t.dataRaspunsTicket}" />
+				</p:column>
+
+				<p:column headerText="Raspuns"
+					style="border:1px ;text-align:center;">
+					<h:outputText
+						value="#{t.continutRaspunsEmail}" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+	</p:dialog>
+
+
+</body>
+</html>

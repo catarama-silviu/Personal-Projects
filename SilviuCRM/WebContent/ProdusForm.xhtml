@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"httf://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head />
+<h:outputStylesheet name="primeicons/primeicons.css"
+	library="primefaces" />
+<body>
+
+	<p:tabMenu activeIndex="#{param.i}">
+		<p:menuitem value="Leads" outcome="LeadForm.xhtml" icon="pi pi-star">
+			<f:param name="i" value="0" />
+		</p:menuitem>
+		<p:menuitem value="Contacte" outcome="ContactForm.xhtml"
+			icon="pi pi-search">
+			<f:param name="i" value="1" />
+		</p:menuitem>
+		<p:menuitem value="Produse" outcome="ProdusForm.xhtml"
+			icon="pi pi-file">
+			<f:param name="i" value="2" />
+		</p:menuitem>
+		<p:menuitem value="Oferte" outcome="OfertaForm.xhtml"
+			icon="pi pi-briefcase">
+			<f:param name="i" value="3" />
+		</p:menuitem>
+		<p:menuitem value="Comenzi" outcome="ComandaForm.xhtml"
+			icon="pi pi-user">
+			<f:param name="i" value="4" />
+
+		</p:menuitem>
+		<p:menuitem value="Tickete" outcome="TicketForm.xhtml"
+			icon="pi pi-user">
+			<f:param name="i" value="5" />
+
+		</p:menuitem>
+		<p:menuitem value="Operatiuni" outcome="OperatiuneForm.xhtml"
+			icon="pi pi-user">
+			<f:param name="i" value="6" />
+
+		</p:menuitem>
+		<p:menuitem value="Angajati" outcome="AngajatForm.xhtml"
+			icon="pi pi-user">
+			<f:param name="i" value="7" />
+
+		</p:menuitem>
+	</p:tabMenu>
+
+	<h:form>
+	
+		<p:selectOneMenu  valueChangeListener="#{loginForm.redirectLogOut}" style="width:10%; float:right ;box-sizing: border-box;">
+	                <f:selectItem  itemValue="#{produsForm.angajatLogin.idAngajat}" itemLabel="#{produsForm.angajatLogin.numeAngajat}"/>
+					<f:selectItem itemLabel="ProfilulMeu" itemValue="Profilul Meu" />
+					<f:selectItem itemLabel="Log Out" itemValue="Log Out" />
+					<f:ajax listener="#{loginForm.redirectLogOut}" />
+				</p:selectOneMenu>
+	
+		<p:commandButton value="Add Produs" icon="pi pi-home"
+			actionListener="#{produsForm.addProdusNou}" 
+			 oncomplete="PF('dlgAddProdus').show()"
+			 update=":formAddProdus"/>
+			
+	</h:form>
+
+	<h:form id="formProdus" border="0">
+
+
+
+
+		<p:dataTable border="1" var="produs" value="#{produsForm.lstProduse}"
+			id="dataTableProdus" selectionMode="single"
+			rowKey="#{produs.idProdus}">
+
+			<p:ajax event="rowSelect"
+				actionListener="#{formularClienti.onRowSelect}" />
+			<p:ajax event="rowUnselect"
+				listener="#{formularClienti.onRowUnselect}" />
+
+
+
+			<p:column headerText="Cod Produs"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{produs.codProdus}" style="center" />
+
+			</p:column>
+			<p:column headerText="Denumire">
+				<h:outputText value="#{produs.numeProdus}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Produs Owner"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{produs.produsOwner.numeAngajat}" />
+			</p:column>
+
+			<p:column headerText="Data Adaugare"
+				style="border:1px ;text-align:center;">
+				<h:outputText value="#{produs.dataAdaugareProdus}" />
+			</p:column>
+
+			<p:column headerText="Pret" style="border:1px ;text-align:center;">
+				<h:outputText value="#{produs.pretBucataProdus}" />
+			</p:column>
+
+			<p:column headerText="Cota TVA">
+				<h:outputText value="#{produs.cotaTvaProdus}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="U.M.">
+				<h:outputText value="#{produs.unitateDeMasuraProdus}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Stoc">
+				<h:outputText value="#{produs.cantitateProdusInStoc}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+			<p:column headerText="Descriere">
+				<h:outputText value="#{produs.descriereProdus}"
+					style="border:1px ;text-align:center;" />
+			</p:column>
+
+			<p:column headerText="Editor">
+				<p:commandButton value="Edit" icon="pi pi-home"
+					action="#{produsForm.select(produs)}"
+					oncomplete="PF('dlgAddProdus').show()" 
+					update=":formAddProdus"/>
+				<p:commandButton value="Delete" icon="pi pi-home"
+					action="#{produsForm.stergereProdus(produs)}" update=":formProdus" />
+
+
+
+			</p:column>
+
+
+		</p:dataTable>
+
+	</h:form>
+
+	<p:dialog widgetVar="dlgAddProdus" closeOnEscape="true" modal="true">
+		<h:form id="formAddProdus" border="5">
+
+
+			<p:outputPanel>
+				<h3>Adaugare Produs Nou</h3>
+
+
+				<p:commandButton value="Salvare Produs" id="SalvareProdus"
+					actionListener="#{produsForm.salvareProdus}"
+					update=":formProdus"
+					style="margin-right:20px;" />
+
+				<p:commandButton value="Anuleaza" id="AnuleazaLead"
+					actionListener="#{produsForm.abandonProdus}"
+					update=":formProdus"
+					style="margin-right:20px;"  />
+			</p:outputPanel>
+			<p:outputPanel>
+				<h3>Informatii Produs</h3>
+			</p:outputPanel>
+			<h:panelGrid border="0" columns="4" cellpadding="5">
+
+
+
+
+				<h:outputLabel for="produsOwner " value="Produs Owner:"
+					style="font-weight:bold" />
+
+				<p:selectOneMenu id="produsOwner"
+					valueChangeListener="#{produsForm.valueChange}">
+					<f:selectItems value="#{produsForm.lstAngajati}" var="item"
+						itemValue="#{item.idAngajat}" itemLabel="#{item.numeAngajat}" />
+					<f:ajax listener="#{produsForm.valueChange}" />
+				</p:selectOneMenu>
+
+
+				<h:outputLabel for="numeProdus " value="Nume:"
+					style="font-weight:bold" />
+				<p:inputText id="numeProdus" value="#{produsForm.produs.numeProdus}" />
+
+				<h:outputLabel for="codProdus " value="Cod Produs:"
+					style="font-weight:bold" />
+				<p:inputText id="codProdus" value="#{produsForm.produs.codProdus}" />
+
+				<h:outputLabel for="pretProdus" value="Pret (fara TVA):"
+					style="font-weight:bold" />
+				<p:inputText id="pretProdus"
+					value="#{produsForm.produs.pretBucataProdus}" />
+
+				<h:outputLabel for="cotaTva" value="Cota TVA:"
+					style="font-weight:bold" />
+				<p:inputText id="cotaTva" value="#{produsForm.produs.cotaTvaProdus}" />
+
+				<h:outputLabel for="stocProdus" value="Stoc:"
+					style="font-weight:bold" />
+				<p:inputText id="stocProdus" value="#{produsForm.produs.cantitateProdusInStoc}" />
+				
+				<h:outputLabel for="umProdus" value="U.M.:"
+					style="font-weight:bold" />
+				<p:selectOneMenu id="cboUMProdus"
+					value="#{produsForm.produs.unitateDeMasuraProdus}">
+
+					<f:selectItem itemLabel="Bucata"
+						itemValue="Bucata" />
+					<f:selectItem itemLabel="Cutie" itemValue="Cutie" />
+					<f:selectItem itemLabel="Ora(e)"
+						itemValue="Ora(e)" />
+					<f:selectItem itemLabel="Kg" itemValue="Kg" />
+					<f:selectItem itemLabel="Pound" itemValue="Pound" />
+					<f:selectItem itemLabel="Litru"
+						itemValue="Litru" />
+					<f:selectItem itemLabel="Metru" itemValue="Metru" />
+					<f:selectItem itemLabel="Foot" itemValue="Foot" />
+					<f:selectItem itemLabel="Square Foot" itemValue="Square Foot" />
+					<f:selectItem itemLabel="Metru2"
+						itemValue="Metru2" />
+					<f:selectItem itemLabel="Metru3" itemValue="Metru3" />
+					<f:selectItem itemLabel="Pagina" itemValue="Pagina" />
+					<f:selectItem itemLabel="Alta U.M." itemValue="Alta U.M." />
+				</p:selectOneMenu>
+
+				<h:outputLabel for="descriereProdus " value="Descriere:"
+					style="font-weight:bold" />
+				<p:inputTextarea rows="2" cols="70" counter="display"
+					maxlength="120" counterTemplate="{0} characters remaining."
+					autoResize="false" value="#{produsForm.produs.descriereProdus}" />
+				<br />
+				<h:outputText id="display" />
+
+
+			</h:panelGrid>
+		</h:form>
+
+	</p:dialog>
+
+
+</body>
+</html>
